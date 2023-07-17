@@ -1,7 +1,8 @@
 # camp-diary
 
 *A web-based diary platform.*
-*Inspired by correspondence-like diary system used in some congregations in their confirmation camps where a camp participant each day answers relevant questions that an assigned camp leader then reads and responds to, asking follow-up questions if needed.*
+
+*Inspired by a correspondence-like diary system used in some congregations in their confirmation camps where a camp participant each day answers relevant questions that an assigned camp leader then reads and responds to, asking follow-up questions if needed.*
 
 
 ### Upcoming Features ###
