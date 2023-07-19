@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, flash
 import auth
 
 
@@ -33,3 +33,13 @@ def login():
 def logout():
     auth.logout()
     return redirect("/")
+
+
+@app.route("/admin")
+def admin():
+    user_role = auth.user_role()
+    if user_role != "admin":
+        flash("You do not have permission to view that page", category="error")
+        return redirect("/")
+    else:
+        return render_template("admin.html")

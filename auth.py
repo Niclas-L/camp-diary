@@ -14,14 +14,16 @@ def login(username, password):
         hash_value = user.password
         if check_password_hash(hash_value, password):
             session["username"] = username
+            session["role"] = user_role()
             flash("Logged in successfully!", category="success")
-            pass
+            print(session)
         else:
             flash("Invalid username or password", category="error")
 
 
 def logout():
     del session["username"]
+    del session["role"]
 
 
 def register(username, password, password2, role):
@@ -43,3 +45,11 @@ def register(username, password, password2, role):
         )
         db.session.commit()
         return True
+
+
+def user_role():
+    if "username" not in session:
+        return None
+    sql = text("SELECT role FROM users WHERE username=:username")
+    result = db.session.execute(sql, {"username": session["username"]})
+    return result.fetchone()[0]
