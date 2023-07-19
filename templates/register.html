@@ -1,27 +1,44 @@
 {% extends "base.html" %} {% block title %}Register{% endblock %} {% block
 content %}
-<h1>Camp Diary - Registration</h1>
+<h1 class="container text-center">Camp Diary - Registration</h1>
 
 <br />
+<div class="container">
+  <div class="col-6 mx-auto">
+    <form method="POST">
+      <input
+        type="text"
+        name="username"
+        class="form-control"
+        placeholder="Username"
+      />
+      <br />
+      <input
+        type="password"
+        name="password1"
+        class="form-control"
+        placeholder="Password"
+      />
+      <br />
+        <input
+          type="password"
+          name="password2"
+          class="form-control"
+          placeholder="Confirm Password"
+        />
+      <br />
+      <label for="role" class="form-label">User role</label>
+        <select name="role" class="form-select">
+          <option value="participant">Camp Participant</option>
+          <option value="counselor">Camp Counselor</option>
+          <option value="admin">Admin</option>
+        </select>
+      </p>
 
-<form method="POST">
-  Username: <br /><input type="text" name="username" />
-  <p>Password: <br /><input type="password" name="password1" /></p>
-
-  <p>Confirm Password: <br /><input type="password" name="password2" /></p>
-
-  <p>
-    User role:<br />
-    <select name="role">
-      <option value="participant">Camp Participant</option>
-      <option value="counselor">Camp Counselor</option>
-      <option value="admin">Admin</option>
-    </select>
-  </p>
-
-  <p>
-    <input type="submit" value="Register" />
-  </p>
-</form>
-
+      <p>
+        <input type="submit" value="Register" class="form-control"/>
+      </p>
+    </form>
+  </div>  
+</div
 {% endblock %}
