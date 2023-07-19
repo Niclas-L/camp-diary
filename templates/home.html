@@ -1,11 +1,10 @@
-{% extends "base.html" %} {% block body %}
+{% extends "base.html" %} {% block content %}
 <h1>Home Page - Camp Diary</h1>
 <br />
 <h3>Log in</h3>
 
 {% if session.username %}
 <p>You are logged in as user {{ session.username }}</p>
-<a href="/logout">Log out</a>
 
 {% else %}
 
@@ -21,8 +20,5 @@
   </p>
   <input type="submit" value="Login" />
 </form>
-
-<br />
-<a href="/register">Register</a>
 
 {% endif %} {% endblock %}

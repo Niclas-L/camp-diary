@@ -1,5 +1,5 @@
 from db import db
-from flask import session
+from flask import session, flash
 from sqlalchemy.sql import text
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -9,15 +9,15 @@ def login(username, password):
     result = db.session.execute(sql, {"username": username})
     user = result.fetchone()
     if not user:
-        print("Invalid username or password")
+        flash("Invalid username or password", category="error")
     else:
         hash_value = user.password
         if check_password_hash(hash_value, password):
             session["username"] = username
-            print("Logged in successfully!")
+            flash("Logged in successfully!", category="success")
             pass
         else:
-            print("Invalid username or password")
+            flash("Invalid username or password", category="error")
 
 
 def logout():
@@ -26,13 +26,13 @@ def logout():
 
 def register(username, password, password2, role):
     if len(username) < 3:
-        print("Username must be at least 3 characters long")
+        flash("Username must be at least 3 characters long", category="error")
     elif password != password2:
-        print("Passwords do not match")
+        flash("Passwords do not match", category="error")
     elif len(password) < 4:
-        print("Password must be at least 4 characters long")
+        flash("Password must be at least 4 characters long", category="error")
     else:
-        print("Account created successfully!")
+        flash("Account created successfully!", category="success")
         # add user to database
         hash_value = generate_password_hash(password)
         sql = text(
@@ -42,3 +42,4 @@ def register(username, password, password2, role):
             sql, {"username": username, "password": hash_value, "role": role}
         )
         db.session.commit()
+        return True
