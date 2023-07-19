@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block title %}Register{% endblock %} {% block body
+%}
+<h1>Camp Diary - Registration</h1>
+
+<br />
+
+<form method="POST">
+  Username: <br /><input type="text" name="username" />
+  <p>Password: <br /><input type="password1" name="password1" /></p>
+
+  <p>Confirm Password: <br /><input type="password2" name="password2" /></p>
+
+  <p>
+    User role:<br />
+    <select name="role">
+      <option value="participant">Camp Participant</option>
+      <option value="counselor">Camp Counselor</option>
+      <option value="admin">Admin</option>
+    </select>
+  </p>
+
+  <p>
+    <input type="submit" value="Register" />
+  </p>
+</form>
+
+<p>
+  <a href="/">Back to home page</a>
+</p>
+{% endblock %}
