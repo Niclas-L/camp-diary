@@ -17,7 +17,7 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password1")
         password2 = request.form.get("password2")
-        role = request.form["role"]
+        role = request.form.get("role")
         auth.register(username, password, password2, role)
 
     return render_template("register.html")
