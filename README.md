@@ -7,6 +7,7 @@
 ### Implemented Features ###
 
 - Users can create accounts and login using a username and password. Users can also log out.
+- Admins can delete users.
 
 ### Upcoming Features ###
 
@@ -15,5 +16,4 @@
 - Camp leaders can see a list of camp participants that they correspond with and open their diary.
 - Camp leaders can, after selecting a participant, select a day to respond to.
 - Admins can assign camp participants to camp leaders.
-- Admins can delete users.
 - Admins can open the next day's questions to the camp participants.
