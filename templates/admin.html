@@ -16,11 +16,62 @@
   <tbody>
     {% for user in our_users %}
     <tr>
-      <th scope="row">{{user.id}}</th>
-      <td>{{user.username}}</td>
-      <td>{{user.role}}</td>
-      <td><a href="/admin/delete/{{user.id}}">Delete</a></td>
+      <th scope="row" class="align-middle">{{user.id}}</th>
+      <td class="align-middle">{{user.username}}</td>
+      <td class="align-middle">{{user.role}}</td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#delete{{user.id}}"
+        >
+          Delete User
+        </button>
+      </td>
     </tr>
+    <div
+      class="modal fade"
+      id="delete{{user.id}}"
+      tabindex="-1"
+      aria-labelledby="deleteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="deleteModalLabel">Delete user?</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete {{ user.username }}
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <form>
+              <button
+                class="btn btn-danger"
+                formaction="/admin/delete/{{user.id}}"
+                data-bs-dismiss="modal"
+              >
+                Delete
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
     {% endfor %}
   </tbody>
 </table>
