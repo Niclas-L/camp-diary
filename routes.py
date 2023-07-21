@@ -1,6 +1,7 @@
 from app import app
 from flask import render_template, request, redirect, flash
 import auth
+from admin import get_users, delete_user
 
 
 @app.route("/", methods=["GET"])
@@ -42,4 +43,16 @@ def admin():
         flash("You do not have permission to view that page", category="error")
         return redirect("/")
     else:
-        return render_template("admin.html")
+        our_users = get_users()
+        return render_template("admin.html", our_users=our_users)
+
+
+@app.route("/admin/delete/<int:id>", methods=["GET", "POST"])
+def admin_delete(id):
+    user_role = auth.user_role()
+    if user_role != "admin":
+        flash("You do not have permission to do that", category="error")
+        return redirect("/")
+    else:
+        delete_user(id)
+        return redirect("/admin")

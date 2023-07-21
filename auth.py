@@ -16,7 +16,6 @@ def login(username, password):
             session["username"] = username
             session["role"] = user_role()
             flash("Logged in successfully!", category="success")
-            print(session)
         else:
             flash("Invalid username or password", category="error")
 
