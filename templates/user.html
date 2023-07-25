@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block title%}My Diary{% endblock %}{% block content
+%} {% if session['role'] == 'participant' %}
+
+<h1>Welcome to your own diary {{session['username']}}!</h1>
+
+{% endif %} {% if session['role'] == 'counselor' %}
+
+<h1>Welcome to your own page {{session['username']}}!</h1>
+
+{% endif %} {% endblock %}

@@ -1,7 +1,7 @@
 from app import app
-from flask import render_template, request, redirect, flash
+from flask import render_template, request, redirect, flash, session
 import auth
-from admin import get_users, delete_user
+from admin import get_users, delete_user, get_questions, delete_question
 
 
 @app.route("/", methods=["GET"])
@@ -44,15 +44,37 @@ def admin():
         return redirect("/")
     else:
         our_users = get_users()
-        return render_template("admin.html", our_users=our_users)
+        questions = get_questions()
+        return render_template("admin.html", our_users=our_users, questions=questions)
 
 
 @app.route("/admin/delete/<int:id>", methods=["GET", "POST"])
 def admin_delete(id):
-    user_role = auth.user_role()
-    if user_role != "admin":
+    if auth.user_role() != "admin":
         flash("You do not have permission to do that", category="error")
         return redirect("/")
     else:
         delete_user(id)
         return redirect("/admin")
+
+
+@app.route("/admin/delete/question/<int:id>", methods=["GET", "POST"])
+def admin_delete_question(id):
+    if auth.user_role() != "admin":
+        flash("You do not have permission to do that", category="error")
+        return redirect("/")
+    else:
+        delete_question(id)
+        return redirect("/admin")
+
+
+@app.route("/user/<int:id>", methods=["GET", "POST"])
+def user_page(id):
+    if "username" not in session:
+        flash("You must be logged in to view that page", category="error")
+        return redirect("/")
+    elif session["id"] != id and session["role"] != "admin":
+        flash("You do not have permission to view that page", category="error")
+        return redirect("/")
+    user_id = id
+    return render_template("user.html", user_id=user_id)

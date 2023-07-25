@@ -13,6 +13,7 @@ def login(username, password):
     else:
         hash_value = user.password
         if check_password_hash(hash_value, password):
+            session["id"] = user.id
             session["username"] = username
             session["role"] = user_role()
             flash("Logged in successfully!", category="success")
@@ -21,6 +22,7 @@ def login(username, password):
 
 
 def logout():
+    del session["id"]
     del session["username"]
     del session["role"]
 
