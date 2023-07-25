@@ -1,6 +1,87 @@
 {% extends "base.html" %} {% block title%}Admin{% endblock %}{% block content %}
 
-<h1 class="container text-center">List of Users</h1>
+<h1 class="container text-center">Participants</h1>
+
+<br />
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Username</th>
+      <th scope="col">Role</th>
+      <th scope="col">Counselor</th>
+      <th scope="col">Delete User</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in our_users %} {% if user.role == 'participant' %}
+    <tr>
+      <th scope="row" class="align-middle">{{user.id}}</th>
+      <td class="align-middle">{{user.username}}</td>
+      <td class="align-middle">{{user.role}}</td>
+      <td class="align-middle">Assign</td>
+      <!-- ADD ASSIGN FEATURE -->
+      <td>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#delete{{user.id}}"
+        >
+          Delete User
+        </button>
+      </td>
+    </tr>
+    <div
+      class="modal fade"
+      id="delete{{user.id}}"
+      tabindex="-1"
+      aria-labelledby="deleteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="deleteModalLabel">Delete user?</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete {{ user.username }}
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <form>
+              <button
+                class="btn btn-danger"
+                formaction="/admin/delete/{{user.id}}"
+                data-bs-dismiss="modal"
+              >
+                Delete
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %} {% endfor %}
+  </tbody>
+</table>
+
+<br />
+
+<h1 class="container text-center">Counselors</h1>
 
 <br />
 
@@ -14,7 +95,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for user in our_users %}
+    {% for user in our_users %} {% if user.role == 'counselor' %}
     <tr>
       <th scope="row" class="align-middle">{{user.id}}</th>
       <td class="align-middle">{{user.username}}</td>
@@ -63,6 +144,83 @@
               <button
                 class="btn btn-danger"
                 formaction="/admin/delete/{{user.id}}"
+                data-bs-dismiss="modal"
+              >
+                Delete
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %} {% endfor %}
+  </tbody>
+</table>
+
+<br />
+
+<h1 class="container text-center">Questions</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Question ID</th>
+      <th scope="col">Question</th>
+      <th scope="col">Delete Question</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for question in questions %}
+    <tr>
+      <th scope="row" class="align-middle">{{question.question_id}}</th>
+      <td class="align-middle">{{question.question}}</td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#delete{{question.question_id}}"
+        >
+          Delete Question
+        </button>
+      </td>
+    </tr>
+    <div
+      class="modal fade"
+      id="delete{{question.question_id}}"
+      tabindex="-1"
+      aria-labelledby="deleteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="deleteModalLabel">
+              Delete question?
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete the question "{{ question.question
+            }}"
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <form>
+              <button
+                class="btn btn-danger"
+                formaction="/admin/delete/question/{{question.question_id}}"
                 data-bs-dismiss="modal"
               >
                 Delete
