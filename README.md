@@ -7,7 +7,8 @@
 ### Implemented Features ###
 
 - Users can create accounts and login using a username and password. Users can also log out.
-- Admins can delete users.
+- Admins can see a list of all users and delete users.
+- Admins can see a list of all questions and delete questions.
 
 ### Upcoming Features ###
 
