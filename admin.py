@@ -17,7 +17,7 @@ def delete_user(user_id):
 
 
 def get_questions():
-    sql = text("SELECT question_id, question FROM questions")
+    sql = text("SELECT question_id, question, day FROM questions ORDER BY day")
     result = db.session.execute(sql)
     questions = result.fetchall()
     return questions
