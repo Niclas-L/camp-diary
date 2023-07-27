@@ -20,8 +20,46 @@
       <tr>
         <th scope="row">{{user.id}}</th>
         <td>{{user.username}}</td>
-        <td>Assign</td>
-        <!-- ADD ASSIGN FEATURE -->
+        <td>
+          <!-- ADD ASSIGN FEATURE -->
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#assign{{user.id}}"
+          >
+            Assign
+          </button>
+          <div
+            class="modal fade"
+            id="assign{{user.id}}"
+            tabindex="-1"
+            aria-labelledby="assignModalLabel"
+            aria-hidden="true"
+          >
+            >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="assignModalLabel">
+                    Assign counselor
+                  </h1>
+                  <form>
+                    <div class="mb-3">
+                      <label for="assignCounselor" class="form-label"
+                        >Counselor</label
+                      >
+                      <input class="form-control" id="assignCounselor" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                      Assign
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
         <td>
           <button
             type="button"

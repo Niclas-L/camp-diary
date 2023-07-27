@@ -54,3 +54,9 @@ def user_role():
     sql = text("SELECT role FROM users WHERE username=:username")
     result = db.session.execute(sql, {"username": session["username"]})
     return result.fetchone()[0]
+
+
+def id_role(id: int):
+    sql = text("SELECT role FROM users WHERE id=:id")
+    result = db.session.execute(sql, {"id": id})
+    return result.fetchone()[0]
