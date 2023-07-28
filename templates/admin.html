@@ -21,7 +21,6 @@
         <th scope="row">{{user.id}}</th>
         <td>{{user.username}}</td>
         <td>
-          <!-- ADD ASSIGN FEATURE -->
           <button
             type="button"
             class="btn btn-primary"
@@ -44,12 +43,20 @@
                   <h1 class="modal-title fs-5" id="assignModalLabel">
                     Assign counselor
                   </h1>
-                  <form>
+                  <form
+                    action="/admin/assign/{{user.id}}"
+                    method="POST"
+                    autocomplete="off"
+                  >
                     <div class="mb-3">
                       <label for="assignCounselor" class="form-label"
                         >Counselor</label
                       >
-                      <input class="form-control" id="assignCounselor" />
+                      <input
+                        class="form-control"
+                        id="assignCounselor"
+                        name="counselor"
+                      />
                     </div>
                     <button type="submit" class="btn btn-primary">
                       Assign

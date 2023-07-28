@@ -32,6 +32,7 @@ def delete_question(question_id):
 
 def assign_participant(p_id, c_id):
     if auth.id_role(p_id) == "participant":
+        print(c_id)
         sql = text(
             "INSERT INTO assigned_participants (user_id, counselor_id) VALUES (:p_id, :c_id)"
         )

@@ -1,7 +1,13 @@
 from app import app
 from flask import render_template, request, redirect, flash, session
 import auth
-from admin import get_users, delete_user, get_questions, delete_question
+from admin import (
+    get_users,
+    delete_user,
+    get_questions,
+    delete_question,
+    assign_participant,
+)
 
 
 @app.route("/", methods=["GET"])
@@ -66,6 +72,21 @@ def admin_delete_question(id):
     else:
         delete_question(id)
         return redirect("/admin")
+
+
+@app.route("/admin/assign/<int:id>", methods=["GET", "POST"])
+def admin_assign(id):
+    if auth.user_role() != "admin":
+        flash("You do not have permission to do that", category="error")
+        return redirect("/")
+    else:
+        p_id = id
+        c_id = request.form.get("counselor")
+        if assign_participant(p_id, c_id):
+            flash("Participant assigned successfully!", category="success")
+        else:
+            flash("Something went wrong", category="error")
+    return redirect("/admin")
 
 
 @app.route("/user/<int:id>", methods=["GET", "POST"])
