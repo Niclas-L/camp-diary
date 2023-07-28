@@ -31,8 +31,6 @@ def delete_question(question_id):
 
 
 def assign_participant(p_id, c_id):
-    print("p_id:", p_id, "c_id:", c_id)
-    print(auth.id_role(p_id))
     if auth.id_role(p_id) == "participant":
         sql = text(
             "SELECT participant_id FROM assigned_participants WHERE participant_id=:p_id"
