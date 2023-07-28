@@ -84,8 +84,6 @@ def admin_assign(id):
         c_id = request.form.get("counselor")
         if assign_participant(p_id, c_id):
             flash("Participant assigned successfully!", category="success")
-        else:
-            flash("Something went wrong", category="error")
     return redirect("/admin")
 
 
