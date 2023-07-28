@@ -20,6 +20,10 @@
       <tr>
         <th scope="row">{{user.id}}</th>
         <td>{{user.username}}</td>
+        {% for assigned in assigned %} {% if user.id == assigned.participant_id
+        %}
+        <td>{{assigned.counselor_id}}</td>
+        {% else %}
         <td>
           <button
             type="button"
@@ -67,6 +71,7 @@
             </div>
           </div>
         </td>
+        {% endif %}{% endfor %}
         <td>
           <button
             type="button"

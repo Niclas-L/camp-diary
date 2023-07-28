@@ -49,3 +49,12 @@ def assign_participant(p_id, c_id):
     else:
         flash("Something went wrong", category="error")
         return False
+
+
+def get_assigned():
+    sql = text(
+        "SELECT participant_id, counselor_id FROM assigned_participants"
+    )
+    result = db.session.execute(sql)
+    assigned = result.fetchall()
+    return assigned

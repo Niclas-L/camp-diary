@@ -7,6 +7,7 @@ from admin import (
     get_questions,
     delete_question,
     assign_participant,
+    get_assigned,
 )
 
 
@@ -51,7 +52,8 @@ def admin():
     else:
         our_users = get_users()
         questions = get_questions()
-        return render_template("admin.html", our_users=our_users, questions=questions)
+        assigned = get_assigned()
+        return render_template("admin.html", our_users=our_users, questions=questions, assigned=assigned)
 
 
 @app.route("/admin/delete/<int:id>", methods=["GET", "POST"])
