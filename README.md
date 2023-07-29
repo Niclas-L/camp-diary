@@ -9,6 +9,7 @@
 - Users can create accounts and login using a username and password. Users can also log out.
 - Admins can see a list of all users and delete users.
 - Admins can see a list of all questions and delete questions.
+- Users can see their answered and unanswered questions on a personal "My Diary"-page (users cannot yet actually answer questions).
 
 ### Upcoming Features ###
 
