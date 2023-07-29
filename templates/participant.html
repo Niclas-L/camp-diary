@@ -1,14 +1,19 @@
 {% extends "base.html" %} {% block title %}My Diary{% endblock %} {% block
-content %} {% for entry in diary %}
+content %}
 
 <h2>Answered Questions</h2>
+{% for day in days %}
+<h4>Day {{day.day}}</h4>
+{% for entry in diary %} {% if entry.day == day.day %}
+
 <div class="card">
   <div class="card-body">
     <h5 class="card-title">{{entry.question}}</h5>
     <p class="card-text">{{entry.answer}}</p>
   </div>
 </div>
-{% endfor %}
+
+{% endif %} {% endfor %} {% endfor %}
 
 <br />
 

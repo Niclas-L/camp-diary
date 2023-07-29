@@ -92,18 +92,21 @@ def admin_assign(id):
     return redirect("/admin")
 
 
-@app.route("/user/<int:id>", methods=["GET", "POST"])
+@app.route("/user/<int:id>")
 def user_page(id):
-    if "username" not in session or (
-        session["id"] != id and session["role"] != "admin"
-    ):
+    if "username" not in session:
         flash("You must be logged in to view that page", category="error")
         return redirect("/")
+    if session["id"] != id and session["role"] != "admin":
+        flash("You do not have permission to do that")
+        return redirect("/")
+
     if session["role"] == "participant":
         return render_template(
             "participant.html",
             diary=diary.get_diary(id),
             unanswered=diary.get_unanswered(id),
+            days=diary.get_days()
         )
     else:
         return render_template("user.html", user_id=id)
