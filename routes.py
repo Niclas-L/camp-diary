@@ -1,6 +1,7 @@
 from app import app
 from flask import render_template, request, redirect, flash, session
 import auth
+import diary
 from admin import (
     get_users,
     delete_user,
@@ -53,7 +54,9 @@ def admin():
         our_users = get_users()
         questions = get_questions()
         assigned = get_assigned()
-        return render_template("admin.html", our_users=our_users, questions=questions, assigned=assigned)
+        return render_template(
+            "admin.html", our_users=our_users, questions=questions, assigned=assigned
+        )
 
 
 @app.route("/admin/delete/<int:id>", methods=["GET", "POST"])
@@ -91,11 +94,16 @@ def admin_assign(id):
 
 @app.route("/user/<int:id>", methods=["GET", "POST"])
 def user_page(id):
-    if "username" not in session:
+    if "username" not in session or (
+        session["id"] != id and session["role"] != "admin"
+    ):
         flash("You must be logged in to view that page", category="error")
         return redirect("/")
-    elif session["id"] != id and session["role"] != "admin":
-        flash("You do not have permission to view that page", category="error")
-        return redirect("/")
-    user_id = id
-    return render_template("user.html", user_id=user_id)
+    if session["role"] == "participant":
+        return render_template(
+            "participant.html",
+            diary=diary.get_diary(id),
+            unanswered=diary.get_unanswered(id),
+        )
+    else:
+        return render_template("user.html", user_id=id)

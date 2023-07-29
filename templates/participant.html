@@ -1,0 +1,22 @@
+{% extends "base.html" %} {% block title %}My Diary{% endblock %} {% block
+content %} {% for entry in diary %}
+
+<h2>Answered Questions</h2>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">{{entry.question}}</h5>
+    <p class="card-text">{{entry.answer}}</p>
+  </div>
+</div>
+{% endfor %}
+
+<br />
+
+<h2>Unanswered Questions</h2>
+{% for question in unanswered %}
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">{{question.question}}</h5>
+  </div>
+</div>
+{% endfor %} {% endblock %}
