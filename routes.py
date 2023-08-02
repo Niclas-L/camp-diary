@@ -5,8 +5,6 @@ import diary
 from admin import (
     get_users,
     delete_user,
-    get_questions,
-    delete_question,
     assign_participant,
     get_assigned,
 )
@@ -52,7 +50,7 @@ def admin():
         return redirect("/")
     else:
         our_users = get_users()
-        questions = get_questions()
+        questions = diary.get_all_questions()
         assigned = get_assigned()
         return render_template(
             "admin.html", our_users=our_users, questions=questions, assigned=assigned
@@ -75,7 +73,7 @@ def admin_delete_question(id):
         flash("You do not have permission to do that", category="error")
         return redirect("/")
     else:
-        delete_question(id)
+        diary.delete_question(id)
         return redirect("/admin")
 
 
@@ -92,6 +90,32 @@ def admin_assign(id):
     return redirect("/admin")
 
 
+@app.route("/admin/manage-diary")
+def manage_diary():
+    if auth.user_role() != "admin":
+        flash("You do not have permission to do that", category="error")
+        return redirect("/")
+    else:
+        questions = diary.get_all_questions()
+        days = diary.get_days()
+        return render_template("manage-diary.html", questions=questions, days=days)
+
+
+@app.route("/admin/add-question", methods=["GET", "POST"])
+def add_question():
+    pass
+
+
+@app.route("/admin/toggle-day/<int:id>")
+def toggle_day(id):
+    if auth.user_role() != "admin":
+        flash("You do not have permission to do that", category="error")
+        return redirect("/")
+    else:
+        diary.toggle_day(id)
+        return redirect("/admin/manage-diary")
+
+
 @app.route("/user/<int:id>")
 def user_page(id):
     if "username" not in session:
@@ -106,7 +130,7 @@ def user_page(id):
             "participant.html",
             diary=diary.get_diary(id),
             unanswered=diary.get_unanswered(id),
-            days=diary.get_days()
+            days=diary.get_days(),
         )
     else:
         return render_template("user.html", user_id=id)
