@@ -20,3 +20,6 @@
 - Counselors can see a list of camp participants that they correspond with and open their diary.
 - Counselors can, after selecting a participant, select a day to respond to.
 - Admins can open the next day's questions to the camp participants.
+
+
+The app can be tested on [fly.io](https://camp-diary.fly.dev/)
