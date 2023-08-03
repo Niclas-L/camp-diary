@@ -30,7 +30,7 @@ content %}
           {% else %}
           <form>
             <button
-              class="btn btn-primary"
+              class="btn btn-success"
               formaction="/admin/toggle-day/{{day.day}}"
             >
               Visible
@@ -38,8 +38,65 @@ content %}
           </form>
           {% endif %}
         </td>
-        <td>Add Question</td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#addQuestion{{day.day}}"
+          >
+            Add Question
+          </button>
+        </td>
       </tr>
+      <div
+        class="modal fade"
+        id="addQuestion{{day.day}}"
+        tabindex="-1"
+        aria-labelledby="addModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="addModalLabel">Add Question</h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <form method="post" autocomplete="off">
+              <div class="modal-body">
+                <input
+                  type="text"
+                  name="question"
+                  class="form-control"
+                  placeholder="Question"
+                />
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-danger"
+                  formaction="/admin/add/question/{{day.day}}"
+                  data-bs-dismiss="modal"
+                >
+                  Add
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
       {% endfor %}
     </tbody>
   </table>

@@ -67,16 +67,6 @@ def admin_delete(id):
         return redirect("/admin")
 
 
-@app.route("/admin/delete/question/<int:id>", methods=["GET", "POST"])
-def admin_delete_question(id):
-    if auth.user_role() != "admin":
-        flash("You do not have permission to do that", category="error")
-        return redirect("/")
-    else:
-        diary.delete_question(id)
-        return redirect("/admin")
-
-
 @app.route("/admin/assign/<int:id>", methods=["GET", "POST"])
 def admin_assign(id):
     if auth.user_role() != "admin":
@@ -101,9 +91,25 @@ def manage_diary():
         return render_template("manage-diary.html", questions=questions, days=days)
 
 
-@app.route("/admin/add-question", methods=["GET", "POST"])
-def add_question():
-    pass
+@app.route("/admin/add/question/<int:day>", methods=["GET", "POST"])
+def add_question(day):
+    if auth.user_role() != "admin":
+        flash("You do not have permission to do that", category="error")
+        return redirect("/")
+    else:
+        question = request.form.get("question")
+        diary.add_question(question, day)
+        return redirect("/admin/manage-diary")
+
+
+@app.route("/admin/delete/question/<int:id>", methods=["GET", "POST"])
+def admin_delete_question(id):
+    if auth.user_role() != "admin":
+        flash("You do not have permission to do that", category="error")
+        return redirect("/")
+    else:
+        diary.delete_question(id)
+        return redirect("/admin/manage-diary")
 
 
 @app.route("/admin/toggle-day/<int:id>")

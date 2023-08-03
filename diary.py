@@ -59,3 +59,9 @@ def toggle_day(id):
     sql = text("UPDATE visible_days SET visible = NOT visible WHERE day=:id")
     db.session.execute(sql, {"id": id})
     db.session.commit()
+
+
+def add_question(question, day):
+    sql = text("INSERT INTO questions (question, day) VALUES (:question, :day)")
+    db.session.execute(sql, {"question": question, "day": day})
+    db.session.commit()
