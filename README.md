@@ -11,6 +11,7 @@
 - Admins can see a list of all users and delete users.
 - Admins can see a list of all questions and delete questions.
 - Admins can assign camp participants to camp leaders.
+- Admins can toggle a day's questions visibility to participants.
 
 
 ### Upcoming Features ###
@@ -19,7 +20,7 @@
 - Participants can navigate to past days' questions, read their responses and answer follow-up questions.
 - Counselors can see a list of camp participants that they correspond with and open their diary.
 - Counselors can, after selecting a participant, select a day to respond to.
-- Admins can open the next day's questions to the camp participants.
+
 
 
 The app can be tested on [fly.io](https://camp-diary.fly.dev/)
