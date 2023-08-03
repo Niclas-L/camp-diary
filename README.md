@@ -9,7 +9,7 @@
 - Users can create accounts and login using a username and password. Users can also log out.
 - Participants can see their answered and unanswered questions on a personal "My Diary"-page (users cannot yet actually answer questions).
 - Admins can see a list of all users and delete users.
-- Admins can see a list of all questions and delete questions.
+- Admins can see a list of all questions and add or delete questions.
 - Admins can assign camp participants to camp leaders.
 - Admins can toggle a day's questions visibility to participants.
 
