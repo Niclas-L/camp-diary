@@ -11,6 +11,13 @@ def get_users():
     return our_users
 
 
+def get_participants():
+    sql = text("SELECT id, username, role FROM users WHERE role = 'participant'")
+    result = db.session.execute(sql)
+    our_participants = result.fetchall()
+    return our_participants
+
+
 def delete_user(user_id):
     sql = text("DELETE FROM users WHERE id=:id")
     db.session.execute(sql, {"id": user_id})
@@ -43,3 +50,11 @@ def get_assigned():
     result = db.session.execute(sql)
     assigned = result.fetchall()
     return assigned
+
+
+def get_assigned_participants():
+    sql = text("SELECT participant_id FROM assigned_participants")
+    result = db.session.execute(sql)
+    assigned_participants = result.fetchall()
+    assigned_participants = [x[0] for x in assigned_participants]
+    return assigned_participants

@@ -16,68 +16,22 @@
       </tr>
     </thead>
     <tbody>
-      {% for user in our_users %} {% if user.role == 'participant' %}
+      {% for participant in our_participants %}
       <tr>
-        <th scope="row">{{user.id}}</th>
-        <td>{{user.username}}</td>
-        {% for assigned in assigned %} {% if user.id == assigned.participant_id
-        %}
+        <th scope="row">{{participant.id}}</th>
+        <td>{{participant.username}}</td>
+        {% if participant.id in assigned_participants %} {% for assigned in
+        assigned %} {% if participant.id == assigned.participant_id %}
         <td>{{assigned.counselor_id}}</td>
-        {% else %}
-        <td>
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#assign{{user.id}}"
-          >
-            Assign
-          </button>
-          <div
-            class="modal fade"
-            id="assign{{user.id}}"
-            tabindex="-1"
-            aria-labelledby="assignModalLabel"
-            aria-hidden="true"
-          >
-            >
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="assignModalLabel">
-                    Assign counselor
-                  </h1>
-                  <form
-                    action="/admin/assign/{{user.id}}"
-                    method="POST"
-                    autocomplete="off"
-                  >
-                    <div class="mb-3">
-                      <label for="assignCounselor" class="form-label"
-                        >Counselor</label
-                      >
-                      <input
-                        class="form-control"
-                        id="assignCounselor"
-                        name="counselor"
-                      />
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                      Assign
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </td>
-        {% endif %}{% endfor %}
+        {% endif %}{% endfor %} {% else %}
+        <td>Not Assigned</td>
+        {% endif %}
         <td>
           <button
             type="button"
             class="btn btn-danger"
             data-bs-toggle="modal"
-            data-bs-target="#delete{{user.id}}"
+            data-bs-target="#delete{{participant.id}}"
           >
             Delete User
           </button>
@@ -85,7 +39,7 @@
       </tr>
       <div
         class="modal fade"
-        id="delete{{user.id}}"
+        id="delete{{participant.id}}"
         tabindex="-1"
         aria-labelledby="deleteModalLabel"
         aria-hidden="true"
@@ -104,7 +58,7 @@
               ></button>
             </div>
             <div class="modal-body">
-              Are you sure you want to delete {{ user.username }}
+              Are you sure you want to delete {{ participant.username }}
             </div>
             <div class="modal-footer">
               <button
@@ -117,7 +71,7 @@
               <form>
                 <button
                   class="btn btn-danger"
-                  formaction="/admin/delete/{{user.id}}"
+                  formaction="/admin/delete/{{participant.id}}"
                   data-bs-dismiss="modal"
                 >
                   Delete
@@ -127,7 +81,7 @@
           </div>
         </div>
       </div>
-      {% endif %} {% endfor %}
+      {% endfor %}
     </tbody>
   </table>
 </div>
@@ -154,7 +108,16 @@
       <tr>
         <th scope="row">{{user.id}}</th>
         <td>{{user.username}}</td>
-        <td>View</td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#assign{{user.id}}"
+          >
+            Assign
+          </button>
+        </td>
         <td>
           <button
             type="button"
@@ -166,6 +129,75 @@
           </button>
         </td>
       </tr>
+
+      <!-- ASSIGN MODAL -->
+      <div
+        class="modal fade"
+        id="assign{{user.id}}"
+        tabindex="-1"
+        aria-labelledby="assignModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="assignModalLabel">
+                Select the participants you want to assign to {{user.username}}.
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <form method="post">
+              <div class="modal-body">
+                <br />
+                {% for participant in our_participants %} {% if participant.id
+                not in assigned_participants %}
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="selected_participants[]"
+                    value="{{participant.id}}"
+                    id="checkAssign{{participant.id}}"
+                  />
+                  <label
+                    class="form-check-label"
+                    for="checkAssign{{participant.id}}"
+                  >
+                    {{participant.username}}
+                  </label>
+                </div>
+                {% endif %} {% endfor %}
+                <br />
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <form>
+                  <button
+                    class="btn btn-primary"
+                    formaction="/admin/assign/{{user.id}}"
+                    data-bs-dismiss="modal"
+                  >
+                    Assign
+                  </button>
+                </form>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- DELETE MODAL -->
       <div
         class="modal fade"
         id="delete{{user.id}}"
@@ -210,6 +242,7 @@
           </div>
         </div>
       </div>
+
       {% endif %} {% endfor %}
     </tbody>
   </table>

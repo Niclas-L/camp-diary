@@ -4,9 +4,11 @@ import auth
 import diary
 from admin import (
     get_users,
+    get_participants,
     delete_user,
     assign_participant,
     get_assigned,
+    get_assigned_participants,
 )
 
 
@@ -49,11 +51,13 @@ def admin():
         flash("You do not have permission to view that page", category="error")
         return redirect("/")
     else:
-        our_users = get_users()
-        questions = diary.get_all_questions()
-        assigned = get_assigned()
         return render_template(
-            "admin.html", our_users=our_users, questions=questions, assigned=assigned
+            "admin.html",
+            our_users=get_users(),
+            our_participants=get_participants(),
+            questions=diary.get_all_questions(),
+            assigned=get_assigned(),
+            assigned_participants=get_assigned_participants(),
         )
 
 
@@ -73,9 +77,13 @@ def admin_assign(id):
         flash("You do not have permission to do that", category="error")
         return redirect("/")
     else:
-        p_id = id
-        c_id = request.form.get("counselor")
-        if assign_participant(p_id, c_id):
+        selected_participants = request.form.getlist("selected_participants[]")
+        c_id = id
+        success = True
+        for p_id in selected_participants:
+            if not assign_participant(p_id, c_id):
+                success = False
+        if success:
             flash("Participant assigned successfully!", category="success")
     return redirect("/admin")
 
@@ -103,7 +111,7 @@ def add_question(day):
 
 
 @app.route("/admin/delete/question/<int:id>", methods=["GET", "POST"])
-def admin_delete_question(id):
+def delete_question(id):
     if auth.user_role() != "admin":
         flash("You do not have permission to do that", category="error")
         return redirect("/")
