@@ -44,7 +44,7 @@ def logout():
     return redirect("/")
 
 
-@app.route("/admin")
+@app.route("/admin/manage-users")
 def admin():
     user_role = auth.user_role()
     if user_role != "admin":
@@ -52,7 +52,7 @@ def admin():
         return redirect("/")
     else:
         return render_template(
-            "admin.html",
+            "manage-users.html",
             our_users=get_users(),
             our_participants=get_participants(),
             questions=diary.get_all_questions(),
@@ -68,7 +68,7 @@ def admin_delete(id):
         return redirect("/")
     else:
         delete_user(id)
-        return redirect("/admin")
+        return redirect("/admin/manage-users")
 
 
 @app.route("/admin/assign/<int:id>", methods=["GET", "POST"])
@@ -85,7 +85,7 @@ def admin_assign(id):
                 success = False
         if success:
             flash("Participant assigned successfully!", category="success")
-    return redirect("/admin")
+    return redirect("/admin/manage-users")
 
 
 @app.route("/admin/manage-diary")
