@@ -58,3 +58,16 @@ def get_assigned_participants():
     assigned_participants = result.fetchall()
     assigned_participants = [x[0] for x in assigned_participants]
     return assigned_participants
+
+
+def get_counselor_participants():
+    sql = text(
+        """SELECT ap.counselor_id, array_agg(ap.participant_id) AS participant_ids
+        FROM assigned_participants ap
+        JOIN users c ON ap.counselor_id = c.id
+        WHERE c.role = 'counselor'
+        GROUP BY ap.counselor_id;"""
+    )
+    result = db.session.execute(sql)
+    counselor_participants = result.fetchall()
+    return counselor_participants
