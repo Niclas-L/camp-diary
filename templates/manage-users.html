@@ -168,24 +168,24 @@
             <form method="post">
               <div class="modal-body">
                 <br />
-                {% for participant in our_participants %} {% for assigned in
-                assigned %} {% if assigned.counselor_id == user.id %}
+                {% for participant in counselor_participants %} {% if
+                participant[0] == user.id %}
                 <div class="form-check">
                   <input
                     class="form-check-input"
                     type="checkbox"
                     name="selected_participants[]"
-                    value="{{participant.id}}"
-                    id="checkAssign{{participant.id}}"
+                    value="{{participant[1]}}"
+                    id="checkUnassign{{participant[1]}}"
                   />
                   <label
                     class="form-check-label"
-                    for="checkAssign{{participant.id}}"
+                    for="checkUnassign{{participant[1]}}"
                   >
-                    {{participant.username}}
+                    {{participant[2]}}
                   </label>
                 </div>
-                {% endif %}{% endfor %}{% endfor %}
+                {% endif %}{% endfor %}
                 <br />
               </div>
               <div class="modal-footer">
@@ -198,11 +198,11 @@
                 </button>
                 <form>
                   <button
-                    class="btn btn-primary"
-                    formaction="/admin/assign/{{user.id}}"
+                    class="btn btn-danger"
+                    formaction="/admin/unassign/{{user.id}}"
                     data-bs-dismiss="modal"
                   >
-                    Assign
+                    Unassign
                   </button>
                 </form>
               </div>

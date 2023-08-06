@@ -9,6 +9,8 @@ from admin import (
     assign_participant,
     get_assigned,
     get_assigned_participants,
+    get_counselor_participants,
+    unassign_participant,
 )
 
 
@@ -51,6 +53,7 @@ def admin():
         flash("You do not have permission to view that page", category="error")
         return redirect("/")
     else:
+        print(get_counselor_participants())
         return render_template(
             "manage-users.html",
             our_users=get_users(),
@@ -58,6 +61,7 @@ def admin():
             questions=diary.get_all_questions(),
             assigned=get_assigned(),
             assigned_participants=get_assigned_participants(),
+            counselor_participants=get_counselor_participants(),
         )
 
 
@@ -84,7 +88,24 @@ def admin_assign(id):
             if not assign_participant(p_id, c_id):
                 success = False
         if success:
-            flash("Participant assigned successfully!", category="success")
+            flash("Participant(s) assigned successfully!", category="success")
+    return redirect("/admin/manage-users")
+
+
+@app.route("/admin/unassign/<int:id>", methods=["GET", "POST"])
+def admin_unassign(id):
+    if auth.user_role() != "admin":
+        flash("You do not have permission to do that", category="error")
+        return redirect("/")
+    else:
+        selected_participants = request.form.getlist("selected_participants[]")
+        c_id = id
+        success = True
+        for p_id in selected_participants:
+            if not unassign_participant(p_id, c_id):
+                success = False
+        if success:
+            flash("Participant(s) unassigned successfully!", category="success")
     return redirect("/admin/manage-users")
 
 

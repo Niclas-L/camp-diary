@@ -45,6 +45,19 @@ def assign_participant(p_id, c_id):
         return False
 
 
+def unassign_participant(p_id, c_id):
+    if auth.id_role(p_id) == "participant":
+        sql = text(
+            "DELETE FROM assigned_participants WHERE participant_id=:p_id AND counselor_id=:c_id"
+        )
+        db.session.execute(sql, {"p_id": p_id, "c_id": c_id})
+        db.session.commit()
+        return True
+    else:
+        flash("Something went wrong", category="error")
+        return False
+
+
 def get_assigned():
     sql = text("SELECT participant_id, counselor_id FROM assigned_participants")
     result = db.session.execute(sql)
@@ -62,12 +75,12 @@ def get_assigned_participants():
 
 def get_counselor_participants():
     sql = text(
-        """SELECT ap.counselor_id, array_agg(ap.participant_id) AS participant_ids
+        """SELECT ap.counselor_id, u.id, u.username
         FROM assigned_participants ap
-        JOIN users c ON ap.counselor_id = c.id
-        WHERE c.role = 'counselor'
-        GROUP BY ap.counselor_id;"""
+        JOIN users u ON ap.participant_id = u.id
+        WHERE u.role = 'participant';"""
     )
     result = db.session.execute(sql)
-    counselor_participants = result.fetchall()
-    return counselor_participants
+    rows = result.fetchall()
+    counselor_participants_list = [(row[0], row[1], row[2]) for row in rows]
+    return counselor_participants_list
