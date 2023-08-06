@@ -45,7 +45,7 @@ content %}
             data-bs-toggle="modal"
             data-bs-target="#addQuestion{{day.day}}"
           >
-            Add Question
+            Add
           </button>
         </td>
       </tr>
@@ -59,7 +59,9 @@ content %}
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="addModalLabel">Add Question</h1>
+              <h1 class="modal-title fs-5" id="addModalLabel">
+                Add question to day {{day.day}}
+              </h1>
               <button
                 type="button"
                 class="btn-close"

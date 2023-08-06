@@ -39,13 +39,15 @@ def delete_question(question_id):
 # FETCHES ALL OPEN and UNANSWERED QUESTIONS
 def get_unanswered(id):
     sql = text(
-        """SELECT q.question_id, q.question
+        """SELECT q.question_id, q.question, q.day
         FROM Questions q 
         LEFT JOIN Diary d ON q.question_id = d.question_id AND d.user_id = :id 
         JOIN visible_days vd ON q.day = vd.day AND vd.visible = true 
-        WHERE d.user_id IS NULL;"""
+        WHERE d.user_id IS NULL
+        ORDER BY q.day;"""
     )
     unanswered = db.session.execute(sql, {"id": id}).fetchall()
+    print(unanswered)
     return unanswered
 
 
@@ -65,3 +67,7 @@ def add_question(question, day):
     sql = text("INSERT INTO questions (question, day) VALUES (:question, :day)")
     db.session.execute(sql, {"question": question, "day": day})
     db.session.commit()
+
+
+def answer_question():
+    pass
