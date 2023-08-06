@@ -16,7 +16,6 @@
 
 ### Upcoming Features ###
 
-- Participants can navigate to the current day's diary questions and submit their answers.
 - Participants can navigate to past days' questions, read their responses and answer follow-up questions.
 - Counselors can see a list of camp participants that they correspond with and open their diary.
 - Counselors can, after selecting a participant, select a day to respond to.
