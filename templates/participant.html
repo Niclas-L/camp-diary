@@ -1,27 +1,52 @@
 {% extends "base.html" %} {% block title %}My Diary{% endblock %} {% block
 content %}
 
-<h2>Answered Questions</h2>
-{% for day in days %} {% if day.visible == true %}
-<h4>Day {{day.day}}</h4>
-{% for entry in diary %} {% if entry.day == day.day %}
+<div class="container mt-5">
+  <h1 class="mb-4">My Diary</h1>
 
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">{{entry.question}}</h5>
-    <p class="card-text">{{entry.answer}}</p>
+  {% for day, entries in diary_data.items() %}
+  <div class="card mt-4">
+    <div class="card-header">
+      <h2>Day {{ day }}</h2>
+    </div>
+    <div class="card-body">
+      {% for entry in entries %}
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{entry.question}}</h5>
+          {% if entry.answer == 'none' %}
+          <form
+            method="POST"
+            action="/participant/answer/{{entry.question_id}}"
+          >
+            <input
+              type="hidden"
+              name="question_id"
+              value="{{entry.question_id}}"
+            />
+            <div class="form-group">
+              <textarea
+                class="form-control"
+                id="answer"
+                name="answer"
+                rows="4"
+                placeholder="Answer here..."
+              ></textarea>
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          {% else %}
+          <p class="card-text">{{entry.answer}}</p>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
   </div>
+  {% endfor %}
 </div>
-
-{% endif %} {% endfor %} {% endif %} {% endfor %}
 
 <br />
 
-<h2>Unanswered Questions</h2>
-{% for question in unanswered %}
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">{{question.question}}</h5>
-  </div>
-</div>
-{% endfor %} {% endblock %}
+{% endblock %}

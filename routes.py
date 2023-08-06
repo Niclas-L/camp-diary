@@ -161,11 +161,20 @@ def user_page(id):
         return redirect("/")
 
     if session["role"] == "participant":
-        return render_template(
-            "participant.html",
-            diary=diary.get_diary(id),
-            unanswered=diary.get_unanswered(id),
-            days=diary.get_days(),
-        )
+        return render_template("participant.html", diary_data=diary.get_answers(id))
     else:
         return render_template("user.html", user_id=id)
+
+
+@app.route("/participant/answer/<int:q_id>", methods=["GET", "POST"])
+def answer_question(q_id):
+    if auth.user_role() != "participant":
+        flash("You do not have permission to do that", category="error")
+        return redirect("/")
+    else:
+        answer = request.form.get("answer")
+        if answer == "":
+            flash("You must provide an answer", category="error")
+            return redirect(f"/user/{session['id']}")
+        diary.answer_question(session["id"], q_id, answer)
+        return redirect(f"/user/{session['id']}")

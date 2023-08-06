@@ -1,7 +1,9 @@
 from db import db
 from sqlalchemy.sql import text
+from collections import defaultdict
 
 
+# FETCHES ALL DIARY ENTRIES FOR SPECIFIED USER
 def get_diary(id):
     sql = text(
         """SELECT q.question_id, q.question, q.day, d.answer 
@@ -36,38 +38,56 @@ def delete_question(question_id):
     db.session.commit()
 
 
-# FETCHES ALL OPEN and UNANSWERED QUESTIONS
-def get_unanswered(id):
+# FETCHES ALL ANSWERS FROM USER, NONE IF QUESTION IS UNANSWERED
+def get_answers(id):
     sql = text(
-        """SELECT q.question_id, q.question, q.day
-        FROM Questions q 
-        LEFT JOIN Diary d ON q.question_id = d.question_id AND d.user_id = :id 
-        JOIN visible_days vd ON q.day = vd.day AND vd.visible = true 
-        WHERE d.user_id IS NULL
-        ORDER BY q.day;"""
+        """SELECT 
+                q.question AS question,
+                COALESCE(d.answer, 'none') AS answer,
+                q.day AS day
+            FROM
+                questions q
+            LEFT JOIN
+                diary d ON q.question_id = d.question_id AND d.user_id = :id
+            WHERE
+                q.visible = TRUE
+            ORDER BY
+                q.day, q.question_id;"""
     )
-    unanswered = db.session.execute(sql, {"id": id}).fetchall()
-    print(unanswered)
-    return unanswered
+    diary = db.session.execute(sql, {"id": id}).fetchall()
+    diary_data = defaultdict(list)
+
+    for row in diary:
+        diary_data[row[2]].append({"question": row[0], "answer": row[1]})
+
+    return diary_data
 
 
+# FETCHES ALL DAYS
 def get_days():
     sql = text("SELECT day, visible FROM visible_days ORDER BY day")
     result = db.session.execute(sql).fetchall()
     return result
 
 
+# TOGGLES DAY VISIBILITY
 def toggle_day(id):
     sql = text("UPDATE visible_days SET visible = NOT visible WHERE day=:id")
     db.session.execute(sql, {"id": id})
     db.session.commit()
 
 
+# ADDS QUESTION TO SPECIFIED DAY
 def add_question(question, day):
     sql = text("INSERT INTO questions (question, day) VALUES (:question, :day)")
     db.session.execute(sql, {"question": question, "day": day})
     db.session.commit()
 
 
-def answer_question():
-    pass
+# ADDS ENTRY IN DIARY TABLE
+def answer_question(p_id, q_id, answer):
+    sql = text(
+        "INSERT INTO diary (user_id, question_id, answer, date) VALUES (:p_id, :q_id, :answer, current_timestamp)"
+    )
+    db.session.execute(sql, {"p_id": p_id, "q_id": q_id, "answer": answer})
+    db.session.commit()
