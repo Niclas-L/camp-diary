@@ -21,12 +21,15 @@
 - Counselors can see a list of camp participants that they correspond with and open their diary.
 - Counselors can, after selecting a participant, select a day to respond to.
 
+<br>
+
+The app can be tested on [fly.io](https://camp-diary.fly.dev/)  
 
 
-The app can be tested on [fly.io](https://camp-diary.fly.dev/)
+<br>
+<br>  
 
+The web app uses Bootstrap 5 for its styling, if you're not familiar with the tool you can read the documentation [here](https://getbootstrap.com/docs/5.3/getting-started/introduction/).  
 
-
-The web app uses Bootstrap 5 for its styling, if you're not familiar with the tool you can read the documentation [here](https://getbootstrap.com/docs/5.3/getting-started/introduction/).
 
 This web app is being created as part of University of Helsinki's course "Aineopintojen harjoitustyö: Tietokantasovellus (summer, 2023)"
