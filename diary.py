@@ -42,17 +42,19 @@ def delete_question(question_id):
 def get_answers(id):
     sql = text(
         """SELECT 
-                q.question AS question,
-                COALESCE(d.answer, 'none') AS answer,
-                q.day AS day
-            FROM
-                questions q
-            LEFT JOIN
-                diary d ON q.question_id = d.question_id AND d.user_id = :id
-            WHERE
-                q.visible = TRUE
-            ORDER BY
-                q.day, q.question_id;"""
+            q.question AS question,
+            COALESCE(d.answer, 'none') AS answer,
+            q.day AS day
+        FROM
+            questions q
+        LEFT JOIN
+            diary d ON q.question_id = d.question_id AND d.user_id = :id
+        JOIN
+            visible_days vd ON q.day = vd.day AND vd.visible = TRUE
+        WHERE
+            q.visible
+        ORDER BY
+            q.day, q.question_id;"""
     )
     diary = db.session.execute(sql, {"id": id}).fetchall()
     diary_data = defaultdict(list)

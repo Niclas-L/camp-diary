@@ -4,7 +4,7 @@ content %}
 <div class="container mt-5">
   <h1 class="mb-4">My Diary</h1>
 
-  {% for day, entries in diary_data.items() %}
+  {% for day, entries in diary_data.items() %} {% if day.visible == t %}
   <div class="card mt-4">
     <div class="card-header">
       <h2>Day {{ day }}</h2>
@@ -44,7 +44,7 @@ content %}
       {% endfor %}
     </div>
   </div>
-  {% endfor %}
+  {% endif %} {% endfor %}
 </div>
 
 <br />

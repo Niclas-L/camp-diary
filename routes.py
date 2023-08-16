@@ -162,6 +162,7 @@ def user_page(id):
         return redirect("/")
 
     if session["role"] == "participant":
+        
         return render_template("participant.html", diary_data=diary.get_answers(id))
     else:
         return render_template("user.html", user_id=id)
