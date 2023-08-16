@@ -27,6 +27,7 @@ def register():
         password2 = request.form.get("password2")
         role = request.form.get("role")
         if auth.register(username, password, password2, role):
+            auth.login(username, password)
             return redirect("/")
 
     return render_template("register.html")
