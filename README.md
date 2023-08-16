@@ -24,3 +24,9 @@
 
 
 The app can be tested on [fly.io](https://camp-diary.fly.dev/)
+
+
+
+The web app uses Bootstrap 5 for its styling, if you're not familiar with the tool you can read the documentation [here](https://getbootstrap.com/docs/5.3/getting-started/introduction/).
+
+This web app is being created as part of University of Helsinki's course "Aineopintojen harjoitustyö: Tietokantasovellus (summer, 2023)"
