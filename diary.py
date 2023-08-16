@@ -42,6 +42,7 @@ def delete_question(question_id):
 def get_answers(id):
     sql = text(
         """SELECT 
+            q.question_id AS question_id,
             q.question AS question,
             COALESCE(d.answer, 'none') AS answer,
             q.day AS day
@@ -60,7 +61,9 @@ def get_answers(id):
     diary_data = defaultdict(list)
 
     for row in diary:
-        diary_data[row[2]].append({"question": row[0], "answer": row[1]})
+        diary_data[row[3]].append(
+            {"question_id": row[0], "question": row[1], "answer": row[2]}
+        )
 
     return diary_data
 
