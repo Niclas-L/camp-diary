@@ -1,0 +1,53 @@
+{% extends "base.html" %} {% block title %}{{participant}}'s Diary{% endblock %}
+{% block content %}
+
+<div class="container mt-5">
+  <h1 class="mb-4 text-center">{{participant}}'s Diary</h1>
+
+  {% for day, entries in diary_data.items() %} {% if day.visible == t %}
+  <div class="card mt-4">
+    <div class="card-header">
+      <h2>Day {{ day }}</h2>
+    </div>
+    <div class="card-body">
+      {% for entry in entries %}
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{entry.question}}</h5>
+          {% if entry.answer == 'none' %}
+          <p>No Answer</p>
+          {% else %}
+          <p class="card-text">{{entry.answer}}</p>
+          <form
+            method="POST"
+            action="/counselor/answer/{{p_id}}/{{entry.question_id}}"
+          >
+            <input
+              type="hidden"
+              name="question_id"
+              value="{{entry.question_id}}"
+            />
+            <div class="form-group">
+              <textarea
+                class="form-control"
+                id="answer"
+                name="answer"
+                rows="4"
+                placeholder="Answer here..."
+              ></textarea>
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %} {% endfor %}
+</div>
+
+<br />
+
+{% endblock %}

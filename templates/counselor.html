@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block title %}My Participants{% endblock %} {%
+block content %}
+
+<div class="container mt-5">
+  <h1 class="mb-4 text-center">My Participants</h1>
+
+  <table class="table table-striped table-bordered align-middle">
+    <thead>
+      <tr>
+        <th scope="col" class="col-auto overflow-hidden">Participant Name</th>
+        <th scope="col" class="col-4">Diary</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for participant in participants %}
+      <tr>
+        <td>{{participant.username}}</td>
+        <td>
+          <a href="/counselor/diary/{{participant.participant_id}}" class="btn btn-primary"
+            >View Diary</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

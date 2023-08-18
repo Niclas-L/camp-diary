@@ -2,6 +2,7 @@ from app import app
 from flask import render_template, request, redirect, flash, session
 import auth
 import diary
+import counselor
 from admin import (
     get_users,
     get_participants,
@@ -162,10 +163,11 @@ def user_page(id):
         return redirect("/")
 
     if session["role"] == "participant":
-        diary_data = diary.get_answers(id)
-        for day, entries in diary_data.items():
-            print("day:", day, "| entries:", entries)
         return render_template("participant.html", diary_data=diary.get_answers(id))
+    elif session["role"] == "counselor":
+        return render_template(
+            "counselor.html", participants=counselor.get_participants(id)
+        )
     else:
         return render_template("user.html", user_id=id)
 
@@ -182,3 +184,22 @@ def answer_question(q_id):
             return redirect(f"/user/{session['id']}")
         diary.answer_question(session["id"], q_id, answer)
         return redirect(f"/user/{session['id']}")
+
+
+@app.route("/counselor/diary/<int:p_id>")
+def counselor_diary(p_id):
+    if auth.user_role() != "counselor":
+        flash("You do not have permission to do that", category="error")
+        return redirect("/")
+    elif counselor.is_assigned(session["id"], p_id):
+        return render_template(
+            "counselor-diary.html",
+            diary_data=diary.get_answers(p_id),
+            participant=counselor.get_username(p_id),
+            p_id=p_id,
+        )
+    else:
+        flash(
+            "You do not have permission to do that",
+            category="error",
+        )
