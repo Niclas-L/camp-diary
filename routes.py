@@ -20,6 +20,11 @@ def index():
     return render_template("home.html")
 
 
+###################
+### AUTH ROUTES ###
+###################
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -46,6 +51,11 @@ def login():
 def logout():
     auth.logout()
     return redirect("/")
+
+
+####################
+### ADMIN ROUTES ###
+####################
 
 
 @app.route("/admin/manage-users")
@@ -153,6 +163,11 @@ def toggle_day(id):
         return redirect("/admin/manage-diary")
 
 
+###################
+### USER ROUTES ###
+###################
+
+
 @app.route("/user/<int:id>")
 def user_page(id):
     if "username" not in session:
@@ -172,6 +187,11 @@ def user_page(id):
         return render_template("user.html", user_id=id)
 
 
+##########################
+### PARTICIPANT ROUTES ###
+##########################
+
+
 @app.route("/participant/answer/<int:q_id>", methods=["GET", "POST"])
 def answer_question(q_id):
     if auth.user_role() != "participant":
@@ -184,6 +204,11 @@ def answer_question(q_id):
             return redirect(f"/user/{session['id']}")
         diary.answer_question(session["id"], q_id, answer)
         return redirect(f"/user/{session['id']}")
+
+
+########################
+### COUNSELOR ROUTES ###
+########################
 
 
 @app.route("/counselor/diary/<int:p_id>")
@@ -203,3 +228,17 @@ def counselor_diary(p_id):
             "You do not have permission to do that",
             category="error",
         )
+
+
+@app.route("/counselor/answer/<int:p_id>/<int:q_id>", methods=["GET", "POST"])
+def answer_counselor(p_id, q_id):
+    if auth.user_role() != "counselor":
+        flash("You do not have permission to do that", category="error")
+        return redirect("/")
+    else:
+        reply = request.form.get("answer")
+        if reply == "":
+            flash("You must provide an answer", category="error")
+            return redirect(f"/counselor/diary/{p_id}")
+        counselor.post_reply(p_id, q_id, reply)
+        return redirect(f"/counselor/diary/{p_id}")

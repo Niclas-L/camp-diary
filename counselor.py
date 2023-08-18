@@ -1,5 +1,6 @@
 from db import db
 from sqlalchemy.sql import text
+from flask import request, session
 
 
 # FETCHES ALL PARTICIPANTS ASSIGNED TO SPECIFIC COUNSELOR
@@ -42,3 +43,20 @@ def get_username(p_id):
     )
     result = db.session.execute(sql, {"p_id": p_id}).fetchone()
     return result[0]
+
+
+# POSTS A REPLY TO A PARTICIPANT'S ANSWER
+def post_reply(p_id, q_id, reply):
+    sql = text(
+        """INSERT INTO follow_up (counselor_id, participant_id, date, question_id, answer)
+        VALUES (:counselor_id, :participant_id, current_timestamp, :question_id, :answer);
+        """
+    )
+    params = {
+        "counselor_id": session["id"],
+        "participant_id": p_id,
+        "question_id": q_id,
+        "answer": reply,
+    }
+    db.session.execute(sql, params)
+    db.session.commit()
