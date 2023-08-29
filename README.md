@@ -13,13 +13,8 @@
 - Admins can see a list of all questions and add or delete questions.
 - Admins can assign camp participants to camp leaders.
 - Admins can toggle a day's questions visibility to participants.
+- Participants can see their counselor's responses to previous questions,
 
-
-### Upcoming Features ###
-
-- Participants can see their counselor's responses to previous questions and answer possible follow-up questions.
-- Counselors can see a list of camp participants that they correspond with and open their diary.
-- Counselors can, after selecting a participant, select a day to respond to.
 
 <br>
 
