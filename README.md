@@ -9,11 +9,14 @@
 - Users can create accounts and login using a username and password. Users can also log out.
 - Participants can see their answered and unanswered questions on a personal "My Diary"-page.
 - Participants can answer unanswered questions from visible days.
+- Participants can see their counselor's responses to previous questions.
+- Councelors can see a list of their assigned participants and navigate to individual participants' diaries.
+- Councelors can post replies to participants' answers.
 - Admins can see a list of all users and delete users.
 - Admins can see a list of all questions and add or delete questions.
 - Admins can assign camp participants to camp leaders.
 - Admins can toggle a day's questions visibility to participants.
-- Participants can see their counselor's responses to previous questions,
+
 
 
 <br>
