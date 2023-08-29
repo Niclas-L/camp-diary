@@ -42,27 +42,35 @@ def delete_question(question_id):
 def get_answers(id):
     sql = text(
         """SELECT 
-            q.question_id AS question_id,
-            q.question AS question,
-            COALESCE(d.answer, 'none') AS answer,
-            q.day AS day
-        FROM
-            questions q
-        LEFT JOIN
-            diary d ON q.question_id = d.question_id AND d.user_id = :id
-        JOIN
-            visible_days vd ON q.day = vd.day AND vd.visible = TRUE
-        WHERE
-            q.visible
-        ORDER BY
-            q.day, q.question_id;"""
+                q.question_id AS question_id,
+                q.question AS question,
+                COALESCE(d.answer, fu.answer, 'none') AS answer,
+                q.day AS day,
+                COALESCE(fu.answer, 'none') AS follow_up
+            FROM
+                questions q
+            LEFT JOIN
+                diary d ON q.question_id = d.question_id AND d.user_id = 11
+            LEFT JOIN
+                follow_up fu ON q.question_id = fu.question_id AND fu.participant_id = 11
+            JOIN
+                visible_days vd ON q.day = vd.day AND vd.visible = TRUE
+            WHERE
+                q.visible
+            ORDER BY
+                day, question_id;"""
     )
     diary = db.session.execute(sql, {"id": id}).fetchall()
     diary_data = defaultdict(list)
 
     for row in diary:
         diary_data[row[3]].append(
-            {"question_id": row[0], "question": row[1], "answer": row[2]}
+            {
+                "question_id": row[0],
+                "question": row[1],
+                "answer": row[2],
+                "follow_up": row[4],
+            }
         )
 
     return diary_data
@@ -96,3 +104,15 @@ def answer_question(p_id, q_id, answer):
     )
     db.session.execute(sql, {"p_id": p_id, "q_id": q_id, "answer": answer})
     db.session.commit()
+
+
+# FETCHES FOLLOW UP ANSWERS
+def follow_ups(p_id):
+    sql = text(
+        """SELECT answer, question_id
+        FROM follow_up
+        WHERE participant_id = :p_id
+        """
+    )
+    result = db.session.execute(sql, {"p_id": p_id}).fetchall()
+    return result

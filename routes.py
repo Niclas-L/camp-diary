@@ -28,6 +28,7 @@ def index():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
+        auth.check_csrf()
         username = request.form.get("username")
         password = request.form.get("password1")
         password2 = request.form.get("password2")
@@ -41,6 +42,8 @@ def register():
 
 @app.route("/login", methods=["POST"])
 def login():
+    if request.method == "POST":
+        auth.check_csrf()
     username = request.form["username"]
     password = request.form["password"]
     auth.login(username, password)
@@ -79,6 +82,8 @@ def admin():
 
 @app.route("/admin/delete/<int:id>", methods=["GET", "POST"])
 def admin_delete(id):
+    if request.method == "POST":
+        auth.check_csrf()
     if auth.user_role() != "admin":
         flash("You do not have permission to do that", category="error")
         return redirect("/")
@@ -89,6 +94,8 @@ def admin_delete(id):
 
 @app.route("/admin/assign/<int:id>", methods=["GET", "POST"])
 def admin_assign(id):
+    if request.method == "POST":
+        auth.check_csrf()
     if auth.user_role() != "admin":
         flash("You do not have permission to do that", category="error")
         return redirect("/")
@@ -106,6 +113,8 @@ def admin_assign(id):
 
 @app.route("/admin/unassign/<int:id>", methods=["GET", "POST"])
 def admin_unassign(id):
+    if request.method == "POST":
+        auth.check_csrf()
     if auth.user_role() != "admin":
         flash("You do not have permission to do that", category="error")
         return redirect("/")
@@ -134,6 +143,8 @@ def manage_diary():
 
 @app.route("/admin/add/question/<int:day>", methods=["GET", "POST"])
 def add_question(day):
+    if request.method == "POST":
+        auth.check_csrf()
     if auth.user_role() != "admin":
         flash("You do not have permission to do that", category="error")
         return redirect("/")
@@ -145,6 +156,8 @@ def add_question(day):
 
 @app.route("/admin/delete/question/<int:id>", methods=["GET", "POST"])
 def delete_question(id):
+    if request.method == "POST":
+        auth.check_csrf()
     if auth.user_role() != "admin":
         flash("You do not have permission to do that", category="error")
         return redirect("/")
@@ -194,6 +207,8 @@ def user_page(id):
 
 @app.route("/participant/answer/<int:q_id>", methods=["GET", "POST"])
 def answer_question(q_id):
+    if request.method == "POST":
+        auth.check_csrf()
     if auth.user_role() != "participant":
         flash("You do not have permission to do that", category="error")
         return redirect("/")
@@ -217,10 +232,12 @@ def counselor_diary(p_id):
         flash("You do not have permission to do that", category="error")
         return redirect("/")
     elif counselor.is_assigned(session["id"], p_id):
+        print(diary.get_answers(p_id))
         return render_template(
             "counselor-diary.html",
             diary_data=diary.get_answers(p_id),
             participant=counselor.get_username(p_id),
+            follow_ups=diary.follow_ups(p_id),
             p_id=p_id,
         )
     else:
@@ -232,6 +249,8 @@ def counselor_diary(p_id):
 
 @app.route("/counselor/answer/<int:p_id>/<int:q_id>", methods=["GET", "POST"])
 def answer_counselor(p_id, q_id):
+    if request.method == "POST":
+        auth.check_csrf()
     if auth.user_role() != "counselor":
         flash("You do not have permission to do that", category="error")
         return redirect("/")

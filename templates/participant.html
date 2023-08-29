@@ -38,6 +38,9 @@ content %}
           </form>
           {% else %}
           <p class="card-text">{{entry.answer}}</p>
+          {% endif %} {% if entry.follow_up != 'none' %}
+          <h5 class="card-title">Follow Up</h5>
+          <p class="card-text">{{entry.follow_up}}</p>
           {% endif %}
         </div>
       </div>

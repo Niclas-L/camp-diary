@@ -16,7 +16,7 @@
           <h5 class="card-title">{{entry.question}}</h5>
           {% if entry.answer == 'none' %}
           <p>No Answer</p>
-          {% else %}
+          {% else %} {% if entry.follow_up == 'none' %}
           <p class="card-text">{{entry.answer}}</p>
           <form
             method="POST"
@@ -39,7 +39,11 @@
             <br />
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
-          {% endif %}
+          {% else %}
+          <p class="card-text">{{entry.answer}}</p>
+          <h5 class="card-title">Follow Up</h5>
+          <p class="card-text">{{entry.follow_up}}</p>
+          {% endif %} {% endif %}
         </div>
       </div>
       {% endfor %}
