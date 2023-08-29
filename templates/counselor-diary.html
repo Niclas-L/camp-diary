@@ -27,6 +27,11 @@
               name="question_id"
               value="{{entry.question_id}}"
             />
+            <input
+              type="hidden"
+              name="csrf_token"
+              value="{{ session.csrf_token }}"
+            />
             <div class="form-group">
               <textarea
                 class="form-control"

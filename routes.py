@@ -28,7 +28,6 @@ def index():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        auth.check_csrf()
         username = request.form.get("username")
         password = request.form.get("password1")
         password2 = request.form.get("password2")
@@ -42,8 +41,6 @@ def register():
 
 @app.route("/login", methods=["POST"])
 def login():
-    if request.method == "POST":
-        auth.check_csrf()
     username = request.form["username"]
     password = request.form["password"]
     auth.login(username, password)
@@ -68,7 +65,6 @@ def admin():
         flash("You do not have permission to view that page", category="error")
         return redirect("/")
     else:
-        print(get_counselor_participants())
         return render_template(
             "manage-users.html",
             our_users=get_users(),
@@ -150,11 +146,12 @@ def add_question(day):
         return redirect("/")
     else:
         question = request.form.get("question")
-        diary.add_question(question, day)
+        if diary.add_question(question, day):
+            flash("Question added successfully!", category="success")
         return redirect("/admin/manage-diary")
 
 
-@app.route("/admin/delete/question/<int:id>", methods=["GET", "POST"])
+@app.route("/admin/delete/question/<int:id>")
 def delete_question(id):
     if request.method == "POST":
         auth.check_csrf()
@@ -162,7 +159,8 @@ def delete_question(id):
         flash("You do not have permission to do that", category="error")
         return redirect("/")
     else:
-        diary.delete_question(id)
+        if diary.delete_question(id):
+            flash("Question deleted successfully!", category="success")
         return redirect("/admin/manage-diary")
 
 
@@ -217,7 +215,8 @@ def answer_question(q_id):
         if answer == "":
             flash("You must provide an answer", category="error")
             return redirect(f"/user/{session['id']}")
-        diary.answer_question(session["id"], q_id, answer)
+        if diary.answer_question(session["id"], q_id, answer):
+            flash("Answer submitted successfully!", category="success")
         return redirect(f"/user/{session['id']}")
 
 
@@ -232,7 +231,6 @@ def counselor_diary(p_id):
         flash("You do not have permission to do that", category="error")
         return redirect("/")
     elif counselor.is_assigned(session["id"], p_id):
-        print(diary.get_answers(p_id))
         return render_template(
             "counselor-diary.html",
             diary_data=diary.get_answers(p_id),
@@ -259,5 +257,6 @@ def answer_counselor(p_id, q_id):
         if reply == "":
             flash("You must provide an answer", category="error")
             return redirect(f"/counselor/diary/{p_id}")
-        counselor.post_reply(p_id, q_id, reply)
+        if counselor.post_reply(p_id, q_id, reply):
+            flash("Reply submitted successfully!", category="success")
         return redirect(f"/counselor/diary/{p_id}")

@@ -36,6 +36,7 @@ def delete_question(question_id):
     sql = text("DELETE FROM questions WHERE question_id=:id")
     db.session.execute(sql, {"id": question_id})
     db.session.commit()
+    return True
 
 
 # FETCHES ALL ANSWERS FROM USER, NONE IF QUESTION IS UNANSWERED
@@ -50,9 +51,9 @@ def get_answers(id):
             FROM
                 questions q
             LEFT JOIN
-                diary d ON q.question_id = d.question_id AND d.user_id = 11
+                diary d ON q.question_id = d.question_id AND d.user_id = :id
             LEFT JOIN
-                follow_up fu ON q.question_id = fu.question_id AND fu.participant_id = 11
+                follow_up fu ON q.question_id = fu.question_id AND fu.participant_id = :id
             JOIN
                 visible_days vd ON q.day = vd.day AND vd.visible = TRUE
             WHERE
@@ -95,6 +96,7 @@ def add_question(question, day):
     sql = text("INSERT INTO questions (question, day) VALUES (:question, :day)")
     db.session.execute(sql, {"question": question, "day": day})
     db.session.commit()
+    return True
 
 
 # ADDS ENTRY IN DIARY TABLE
@@ -104,6 +106,7 @@ def answer_question(p_id, q_id, answer):
     )
     db.session.execute(sql, {"p_id": p_id, "q_id": q_id, "answer": answer})
     db.session.commit()
+    return True
 
 
 # FETCHES FOLLOW UP ANSWERS

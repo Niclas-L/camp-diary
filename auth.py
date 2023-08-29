@@ -1,3 +1,4 @@
+import secrets
 from db import db
 from flask import session, flash, abort, request
 from sqlalchemy.sql import text
@@ -16,6 +17,8 @@ def login(username, password):
             session["id"] = user.id
             session["username"] = username
             session["role"] = user_role()
+            session["csrf_token"] = secrets.token_hex(16)
+
             flash("Logged in successfully!", category="success")
         else:
             flash("Invalid username or password", category="error")
@@ -58,8 +61,7 @@ def user_role():
 
 def id_role(id: int):
     sql = text("SELECT role FROM users WHERE id=:id")
-    result = db.session.execute(sql, {"id": id})
-    role = result.fetchone()
+    role = db.session.execute(sql, {"id": id}).fetchone()
     if role == None:
         return None
     return role[0]

@@ -60,3 +60,4 @@ def post_reply(p_id, q_id, reply):
     }
     db.session.execute(sql, params)
     db.session.commit()
+    return True
