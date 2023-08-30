@@ -26,7 +26,7 @@ The app can be tested on [fly.io](https://camp-diary.fly.dev/)
 
 <br>
 
-Possible future additions to the site:
+### Possible future additions to the site
 - Currently the length of the camp cannot be changed and the site only serves one camp, it is set to 8 days, in the future one could implement functionality for admins to create new camp instances and edit their length as well as assign users to correct camps.
 - In the future it would be good to allow participants and counselors to continuously reply to each other's answers. For now the counselor can only reply once to a participant's answer.
 
