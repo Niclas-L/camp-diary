@@ -20,18 +20,9 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/admin/manage-diary">Manage Diary</a>
-          {% endif %} {% if session["username"] %} {% if session["role"] ==
-          "participant" %}
+          {% endif %} {% if session["username"] %}
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="/user/{{session['id']}}">My Diary</a>
-        </li>
-        {% endif %} {% if session["role"] == "counselor" %}
-        <li class="nav-item">
-          <a class="nav-link" href="/user/{{session['id']}}">My Participants</a>
-        </li>
-        {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="/logout">Logout</a>
         </li>

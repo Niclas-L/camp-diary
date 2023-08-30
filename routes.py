@@ -17,6 +17,9 @@ from admin import (
 
 @app.route("/", methods=["GET"])
 def index():
+    if "role" in session:
+        if session["role"] == "participant" or session["role"] == "counselor":
+            return redirect(f"/user/{session['id']}")
     return render_template("home.html")
 
 

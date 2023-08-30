@@ -1,13 +1,17 @@
-{% extends "base.html" %} {% block content %}
-<h1 class="container text-center">Home Page - Camp Diary</h1>
+{% extends "base.html" %} {% block content %} {% if session.username and
+session.role == 'admin' %}
+<h1 class="container text-center">Admin Page</h1>
 <br />
 
-{% if session.username %}
 <p class="container text-center">
-  You are logged in as user {{ session.username }}
+  You can manage either users or the diary using the navbar above.
 </p>
 
 {% else %}
+
+<h1 class="container text-center">Welcome to Camp Diary!</h1>
+<br />
+
 <h3 class="container text-center">Log in</h3>
 
 <div class="container mt-5">
